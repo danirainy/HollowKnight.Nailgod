@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<OutputType>Library</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<LangVersion>latest</LangVersion>
+		<Deterministic>true</Deterministic>
+		<ImplicitUsings>true</ImplicitUsings>
+		<DebugType>portable</DebugType>
+		<ReferenceInstallation>C:/Users/yunjo/My Drive/Matroid/Games/Hollow Knight/Mods/Resources/Managed 1.5.78.11833</ReferenceInstallation>
+		<ActualInstallation>C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight/hollow_knight_Data/Managed</ActualInstallation>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="WavLib" Version="1.0.1" />
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(ReferenceInstallation)/Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AudioModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.AudioModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.ImageConversionModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.ImageConversionModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.InputLegacyModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.InputLegacyModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.ParticleSystemModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.ParticleSystemModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.Physics2DModule">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.Physics2DModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>$(ReferenceInstallation)/UnityEngine.UI.dll</HintPath>
+		</Reference>
+		<Reference Include="PlayMaker">
+			<HintPath>$(ReferenceInstallation)/PlayMaker.dll</HintPath>
+		</Reference>
+		<Reference Include="MMHOOK_Assembly-CSharp">
+			<HintPath>$(ReferenceInstallation)/MMHOOK_Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="MMHOOK_PlayMaker">
+			<HintPath>$(ReferenceInstallation)/MMHOOK_PlayMaker.dll</HintPath>
+		</Reference>
+		<Reference Include="MonoMod.Utils">
+			<HintPath>$(ReferenceInstallation)/MonoMod.Utils.dll</HintPath>
+		</Reference>
+		<Reference Include="Satchel">
+			<HintPath>$(ReferenceInstallation)/Mods/Satchel/Satchel.dll</HintPath>
+		</Reference>
+		<EmbeddedResource Include="Resources/Final Battle.wav" />
+		<EmbeddedResource Include="Resources/Gun Shot.wav" />
+		<EmbeddedResource Include="Resources/Textures/Dash Slash.png" />
+		<EmbeddedResource Include="Resources/Animations/*/*" />
+	</ItemGroup>
+	<Target Name="Installation" AfterTargets="PostBuildEvent">
+		<Copy SourceFiles="$(TargetDir)/$(TargetName).dll" DestinationFolder="$(ActualInstallation)/Mods/$(TargetName)" />
+		<Copy SourceFiles="$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(ActualInstallation)/Mods/$(TargetName)" />
+	</Target>
+</Project>
