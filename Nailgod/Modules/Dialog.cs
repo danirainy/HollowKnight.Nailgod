@@ -25,7 +25,7 @@ public class Dialog : Module
             {
                 if (bossLevel == 2)
                 {
-                    orig = "再见.";
+                    orig = "bd.";
                 }
                 else
                 {
@@ -36,7 +36,7 @@ public class Dialog : Module
             {
                 if (bossLevel == 2)
                 {
-                    orig = "Farewell.";
+                    orig = "bd.";
                 }
                 else
                 {

@@ -106,6 +106,8 @@ public class Arena : Module
     }
     public override void ActiveSceneChanged(UnityEngine.SceneManagement.Scene from, UnityEngine.SceneManagement.Scene to)
     {
+        LogWarn(from.name + "trans to " + to.name);
+        LogWarn("cur" + UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         if (InArena())
         {
             foreach (var gameObject in to.GetAllGameObjects())
@@ -173,7 +175,8 @@ public class Arena : Module
                         {
                             var fsm = child.GetComponent<PlayMakerFSM>();
                             fsm.ChangeTransition("Init", "FINISHED", "Active");
-                        }else if (child.name.StartsWith("white_ash_scenery"))
+                        }
+                        else if (child.name.StartsWith("white_ash_scenery"))
                         {
                             var pos = child.transform.position;
                             pos.z = 0.04f;
@@ -210,16 +213,40 @@ public class Arena : Module
             }
         }
     }
+    MusicCue savedCue = null;
+    AudioClip savedClip = null;
     public override void BeginApplyMusicCue(On.AudioManager.orig_BeginApplyMusicCue orig, AudioManager self, MusicCue musicCue, float delayTime, float transitionTime, bool applySnapshot)
     {
+        LogWarn("BeginApplyMusicCue called with musicCue" + musicCue.GetInstanceID().ToString());
         if (InArena())
         {
             MusicCue.MusicChannelInfo[] channelInfos = ReflectionHelper.GetField<MusicCue, MusicCue.MusicChannelInfo[]>(musicCue, "channelInfos");
             foreach (MusicCue.MusicChannelInfo channelInfo in channelInfos)
             {
-                if (ReflectionHelper.GetField<MusicCue.MusicChannelInfo, AudioClip>(channelInfo, "clip") != null)
+                var clip = ReflectionHelper.GetField<MusicCue.MusicChannelInfo, AudioClip>(channelInfo, "clip");
+                if (clip != null)
                 {
+                    LogWarn(clip.GetInstanceID() + "->" + bgm.GetInstanceID().ToString());
+                    if (savedClip == null)
+                    {
+                        savedCue = musicCue;
+                        savedClip = clip;
+                    }
                     ReflectionHelper.SetField(channelInfo, "clip", bgm);
+                }
+            }
+            ReflectionHelper.SetField<MusicCue, MusicCue.MusicChannelInfo[]>(musicCue, "channelInfos", channelInfos);
+        }
+        else if (musicCue == savedCue)
+        {
+            MusicCue.MusicChannelInfo[] channelInfos = ReflectionHelper.GetField<MusicCue, MusicCue.MusicChannelInfo[]>(musicCue, "channelInfos");
+            foreach (MusicCue.MusicChannelInfo channelInfo in channelInfos)
+            {
+                var clip = ReflectionHelper.GetField<MusicCue.MusicChannelInfo, AudioClip>(channelInfo, "clip");
+                if (clip != null)
+                {
+                    LogWarn(clip.GetInstanceID() + "->" + savedClip.GetInstanceID().ToString());
+                    ReflectionHelper.SetField(channelInfo, "clip", savedClip);
                 }
             }
             ReflectionHelper.SetField<MusicCue, MusicCue.MusicChannelInfo[]>(musicCue, "channelInfos", channelInfos);

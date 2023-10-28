@@ -124,6 +124,7 @@ public class Nailgod : Mod, IGlobalSettings<Settings>, IMenuMod
     }
     private void ActiveSceneChanged(UnityEngine.SceneManagement.Scene from, UnityEngine.SceneManagement.Scene to)
     {
+        LogWarn("acc" + from.name + " to " + to.name);
         foreach (var module in ActiveModules())
         {
             module.ActiveSceneChanged(from, to);

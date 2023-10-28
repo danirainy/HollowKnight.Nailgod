@@ -26,7 +26,15 @@ public abstract class Module
     }
     public GameObject SlyBoss()
     {
-        return GameObject.Find("Battle Scene").Find("Sly Boss").gameObject;
+        var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        foreach (var obj in scene.GetRootGameObjects())
+        {
+            LogWarn("checking" + obj.name);
+            if (obj.name == "Battle Scene")
+                return obj.Find("Sly Boss").gameObject;
+        }
+        return null;
+
     }
     public virtual List<(string, string)> GetPreloadNames()
     {
